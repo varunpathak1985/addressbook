@@ -19,11 +19,6 @@ pipeline {
                 sh 'java -version'
             }
         }
-        stage('Checkout the code') {
-            steps {
-                git branch: 'master', url: 'https://github.com/devopstrainers1/addressbook.git'
-            }
-        }
         stage('Validate the code') {
             steps {
                 sh 'mvn validate'
