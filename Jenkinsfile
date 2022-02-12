@@ -1,66 +1,32 @@
 pipeline {
-        agent {
-            label 'master'
-        }
-        tools {
-            maven 'mymaven'
-            jdk 'myjava'
-        }
-    stages {
 
-        stage ('Checkout the code') {
-            steps{
-                git branch: 'main', url: 'https://github.com/devopstrainers1/spring-petclinic.git'
-            }
-        }
-
-      stage ('Parallel block') {
-       parallel {   
-        stage ('Code Validate') {
-            steps{
-                sh """
-                mvn validate
-                """
-            
-        }
-        }
-
-        stage ('Code Compile') {
-            steps{
-               
-                sh """
-                mvn compile
-                """
-            
-        }
-        }
-       }
-      }
-
-        stage ('JUNIT Test') {
-            steps{
-                sh """
-                mvn test
-                """
-            }
-        }
-
-        stage ('Packaging') {
+agent { node { label 'master' } }
+tools {
+        maven 'maven3.3.9' 
+        jdk 'jdk1.8'
+    }
+stages {
+        stage('Code validate') {
             steps {
-                sh """
-                mvn package
-                """
-
+                sh 'mvn validate'
+            }
+        }
+        stage('Code Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('Code Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Code Package') {
+            steps {
+                sh 'mvn package'
             }
         }
 
-
-      }
-      post {
-
-          always{
-              junit 'target/surefire-reports/**/*.xml'
-          }
-      }   
-
+        
+    }
 }
