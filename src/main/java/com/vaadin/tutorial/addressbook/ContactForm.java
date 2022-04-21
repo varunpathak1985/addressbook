@@ -1,4 +1,4 @@
-#this is the comment by VP
+// this is the comment by VP
 
 package com.vaadin.tutorial.addressbook;
 
